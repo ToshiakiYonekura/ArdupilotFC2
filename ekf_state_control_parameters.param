@@ -1,0 +1,263 @@
+# EKF State Feedback Controller Parameters
+# Configuration for EKF-based state feedback control with mode switching
+# Vehicle: 6-motor X-configuration hexacopter
+# Mass: 2.5 kg, System ID based parameters
+
+# ============================================================================
+# CONTROL MODE SELECTION
+# ============================================================================
+EKF_CTRL_MODE,1              # Control mode: 0=Cascade, 1=EKF_Feedback, 2=Adaptive_Hybrid
+EKF_CTRL_SWITCH_EN,1         # Enable automatic mode switching (0=disabled, 1=enabled)
+EKF_CTRL_SWITCH_HYST,2000    # Mode switching hysteresis time (ms)
+
+# ============================================================================
+# LQG CONTROLLER WEIGHTS
+# ============================================================================
+
+# State Cost Matrix Q - Position Weights
+EKF_Q_POS_X,10.0             # X position error weight
+EKF_Q_POS_Y,10.0             # Y position error weight  
+EKF_Q_POS_Z,15.0             # Z position error weight (higher for altitude)
+
+# State Cost Matrix Q - Velocity Weights
+EKF_Q_VEL_X,5.0              # X velocity error weight
+EKF_Q_VEL_Y,5.0              # Y velocity error weight
+EKF_Q_VEL_Z,8.0              # Z velocity error weight
+
+# State Cost Matrix Q - Attitude Weights
+EKF_Q_ATT_ROLL,100.0         # Roll attitude error weight
+EKF_Q_ATT_PITCH,100.0        # Pitch attitude error weight
+EKF_Q_ATT_YAW,50.0           # Yaw attitude error weight
+
+# State Cost Matrix Q - Angular Rate Weights  
+EKF_Q_RATE_ROLL,20.0         # Roll rate error weight
+EKF_Q_RATE_PITCH,20.0        # Pitch rate error weight
+EKF_Q_RATE_YAW,10.0          # Yaw rate error weight
+
+# Control Cost Matrix R - Control Effort Weights
+EKF_R_TORQUE_ROLL,1.0        # Roll torque effort weight
+EKF_R_TORQUE_PITCH,1.0       # Pitch torque effort weight
+EKF_R_TORQUE_YAW,2.0         # Yaw torque effort weight (higher cost)
+EKF_R_THRUST,0.1             # Thrust effort weight (lower cost)
+
+# ============================================================================
+# ADAPTIVE CONTROL PARAMETERS
+# ============================================================================
+
+# Uncertainty Thresholds
+EKF_UNCERT_THRESH,0.5        # EKF uncertainty threshold for mode switching
+EKF_UNCERT_ADAPT_RATE,0.1    # Adaptation rate to uncertainty (0.01-1.0)
+EKF_UNCERT_MIN_GAIN,0.3      # Minimum adaptive gain factor
+EKF_UNCERT_MAX_GAIN,2.0      # Maximum adaptive gain factor
+
+# Performance Monitoring
+EKF_PERF_THRESH,0.8          # Performance threshold for mode switching
+EKF_STAB_MARGIN_THRESH,0.3   # Stability margin threshold
+
+# Innovation Monitoring
+EKF_INNOV_POS_GATE,3.0       # Position innovation gate (sigma)
+EKF_INNOV_VEL_GATE,3.0       # Velocity innovation gate (sigma)
+EKF_INNOV_ATT_GATE,2.0       # Attitude innovation gate (sigma)
+
+# ============================================================================
+# CONTROL LIMITS AND SAFETY
+# ============================================================================
+
+# Control Authority Limits (based on system identification)
+EKF_LIM_ROLL_TORQUE,11.25    # Max roll torque (N⋅m) = T_max * L * 3
+EKF_LIM_PITCH_TORQUE,11.25   # Max pitch torque (N⋅m)
+EKF_LIM_YAW_TORQUE,1.91      # Max yaw torque (N⋅m) = T_max * kM/kT * 6
+EKF_LIM_THRUST,90.0          # Max total thrust (N) = T_max * 6
+
+# Rate Limits (to prevent aggressive control)
+EKF_LIM_ROLL_RATE,200.0      # Max roll rate command (deg/s)
+EKF_LIM_PITCH_RATE,200.0     # Max pitch rate command (deg/s)
+EKF_LIM_YAW_RATE,90.0        # Max yaw rate command (deg/s)
+
+# Attitude Limits
+EKF_LIM_ROLL_ANGLE,45.0      # Max roll angle (degrees)
+EKF_LIM_PITCH_ANGLE,45.0     # Max pitch angle (degrees)
+
+# Velocity Limits
+EKF_LIM_VEL_XY,15.0          # Max horizontal velocity (m/s)
+EKF_LIM_VEL_Z,10.0           # Max vertical velocity (m/s)
+
+# ============================================================================
+# DISTURBANCE REJECTION AND WIND COMPENSATION
+# ============================================================================
+
+# Wind Compensation
+EKF_WIND_COMP_EN,1           # Enable wind compensation (0=disabled, 1=enabled)
+EKF_WIND_GAIN_ROLL,0.5       # Wind compensation gain for roll
+EKF_WIND_GAIN_PITCH,0.5      # Wind compensation gain for pitch
+EKF_WIND_GAIN_YAW,0.2        # Wind compensation gain for yaw
+
+# Disturbance Rejection
+EKF_DIST_REJ_EN,1            # Enable disturbance rejection (0=disabled, 1=enabled)
+EKF_DIST_GAIN_X,1.0          # Disturbance rejection gain X-axis
+EKF_DIST_GAIN_Y,1.0          # Disturbance rejection gain Y-axis
+EKF_DIST_GAIN_Z,1.5          # Disturbance rejection gain Z-axis
+
+# ============================================================================
+# REFERENCE MODEL PARAMETERS
+# ============================================================================
+
+# Reference Trajectory Generation
+EKF_REF_NAT_FREQ,1.0         # Reference model natural frequency (rad/s)
+EKF_REF_DAMP_RATIO,0.7       # Reference model damping ratio
+EKF_REF_MAX_ACCEL,5.0        # Maximum reference acceleration (m/s²)
+
+# Trajectory Smoothing
+EKF_TRAJ_SMOOTH_EN,1         # Enable trajectory smoothing (0=disabled, 1=enabled)
+EKF_TRAJ_SMOOTH_TIME,0.5     # Trajectory smoothing time constant (s)
+
+# ============================================================================
+# MODE SWITCHING CRITERIA
+# ============================================================================
+
+# Automatic Switching Thresholds
+EKF_SWITCH_POS_ERR,2.0       # Position error threshold for switching (m)
+EKF_SWITCH_VEL_ERR,1.0       # Velocity error threshold for switching (m/s)
+EKF_SWITCH_ATT_ERR,15.0      # Attitude error threshold for switching (degrees)
+
+# EKF Health Monitoring
+EKF_HEALTH_POS_VAR,1.0       # Position variance threshold for health
+EKF_HEALTH_VEL_VAR,1.0       # Velocity variance threshold for health
+EKF_HEALTH_ATT_VAR,0.1       # Attitude variance threshold for health
+
+# Performance Evaluation Window
+EKF_EVAL_WINDOW,2000         # Performance evaluation window (ms)
+EKF_MONITOR_WINDOW,5000      # Post-switch monitoring window (ms)
+
+# ============================================================================
+# FAULT DETECTION AND ISOLATION
+# ============================================================================
+
+# Actuator Fault Detection
+EKF_FDI_ACT_EN,1             # Enable actuator fault detection
+EKF_FDI_ACT_THRESH,0.8       # Actuator fault detection threshold
+EKF_FDI_ACT_TIME,1000        # Actuator fault detection time (ms)
+
+# Sensor Fault Detection
+EKF_FDI_SENS_EN,1            # Enable sensor fault detection
+EKF_FDI_SENS_THRESH,3.0      # Sensor fault detection threshold (sigma)
+EKF_FDI_SENS_TIME,500        # Sensor fault detection time (ms)
+
+# Control Reconfiguration
+EKF_RECONFIG_EN,1            # Enable control reconfiguration on faults
+EKF_RECONFIG_MODE,0          # Reconfiguration mode (0=cascade, 1=degraded)
+
+# ============================================================================
+# LOGGING AND DIAGNOSTICS
+# ============================================================================
+
+# High-Rate Logging for EKF Controller
+LOG_EKF_CTRL,1               # Enable EKF controller logging
+LOG_EKF_STATE,1              # Log EKF state estimates
+LOG_EKF_COV,1                # Log EKF covariance matrix
+LOG_EKF_INNOV,1              # Log EKF innovations
+LOG_EKF_GAINS,1              # Log adaptive gains
+
+# Performance Metrics Logging
+LOG_CTRL_PERF,1              # Log control performance metrics
+LOG_MODE_SWITCH,1            # Log mode switching events
+LOG_ADAPT_GAINS,1            # Log adaptive gain factors
+
+# ============================================================================
+# ADVANCED FEATURES
+# ============================================================================
+
+# Model Predictive Control (Future Enhancement)
+EKF_MPC_EN,0                 # Enable MPC (0=disabled, 1=enabled)
+EKF_MPC_HORIZON,10           # MPC prediction horizon
+EKF_MPC_UPDATE_RATE,50       # MPC update rate (Hz)
+
+# Robust H-infinity Control (Future Enhancement)  
+EKF_HINF_EN,0                # Enable H-infinity control (0=disabled, 1=enabled)
+EKF_HINF_GAMMA,2.0           # H-infinity performance level
+
+# Neural Network Adaptation (Future Enhancement)
+EKF_NN_ADAPT_EN,0            # Enable neural network adaptation
+EKF_NN_LEARN_RATE,0.001      # Neural network learning rate
+
+# ============================================================================
+# EXPERIMENTAL PARAMETERS
+# ============================================================================
+
+# Research and Development Options
+EKF_EXP_NONLINEAR,0          # Enable nonlinear control extensions
+EKF_EXP_BACKSTEPPING,0       # Enable backstepping control
+EKF_EXP_SLIDING_MODE,0       # Enable sliding mode control
+
+# Data Collection for System ID
+EKF_COLLECT_DATA,0           # Enable data collection mode
+EKF_DATA_RATE,100            # Data collection rate (Hz)
+EKF_DATA_DURATION,30         # Data collection duration (s)
+
+# ============================================================================
+# SYSTEM IDENTIFICATION INTEGRATION
+# ============================================================================
+
+# Use Identified Parameters from Previous System ID
+# These parameters override defaults with experimentally identified values
+
+# Physical Parameters (from system identification)
+EKF_SYS_MASS,2.5             # Identified vehicle mass (kg)
+EKF_SYS_IXX,0.0347           # Identified roll inertia (kg⋅m²)
+EKF_SYS_IYY,0.0347           # Identified pitch inertia (kg⋅m²)
+EKF_SYS_IZZ,0.0617           # Identified yaw inertia (kg⋅m²)
+EKF_SYS_ARM_LENGTH,0.25      # Identified arm length (m)
+
+# Motor Characteristics (from motor testing)
+EKF_SYS_KT,3.16E-06          # Identified thrust coefficient (N⋅s²)
+EKF_SYS_KM,7.94E-08          # Identified torque coefficient (N⋅m⋅s²)
+EKF_SYS_TAU_MOTOR,0.15       # Identified motor time constant (s)
+
+# Aerodynamic Parameters (from flight testing)
+EKF_SYS_CD_X,0.25            # Identified X-axis drag coefficient
+EKF_SYS_CD_Y,0.25            # Identified Y-axis drag coefficient
+EKF_SYS_CD_Z,0.30            # Identified Z-axis drag coefficient
+
+# ============================================================================
+# PARAMETER VALIDATION AND BOUNDS
+# ============================================================================
+
+# Parameter bounds for safety (automatically enforced)
+# Q matrix weights: 0.1 to 1000.0
+# R matrix weights: 0.01 to 100.0
+# Gain factors: 0.1 to 10.0
+# Time constants: 0.01 to 60.0 seconds
+# Angles: -180 to 180 degrees
+# Rates: 0 to 1000 deg/s
+# Accelerations: 0 to 50 m/s²
+
+# Parameter consistency checks
+EKF_PARAM_CHECK_EN,1         # Enable parameter consistency checking
+EKF_PARAM_AUTO_BOUND,1       # Enable automatic parameter bounding
+
+# ============================================================================
+# TUNING NOTES
+# ============================================================================
+
+# Initial Tuning Procedure:
+# 1. Start with cascade control mode (EKF_CTRL_MODE = 0)
+# 2. Verify EKF health and low uncertainty
+# 3. Switch to EKF feedback mode (EKF_CTRL_MODE = 1)
+# 4. Tune Q matrix weights for desired response characteristics
+# 5. Tune R matrix weights for control effort limits
+# 6. Enable adaptive hybrid mode (EKF_CTRL_MODE = 2)
+# 7. Adjust uncertainty thresholds for smooth switching
+
+# Performance Optimization:
+# - Increase Q weights for tighter tracking
+# - Increase R weights for smoother control
+# - Adjust adaptation rate for uncertainty response
+# - Enable wind compensation for outdoor flight
+# - Monitor innovation sequence for EKF health
+
+# Safety Considerations:
+# - Always test in cascade mode first
+# - Set conservative control limits initially
+# - Monitor mode switching frequency
+# - Verify EKF health before enabling state feedback
+# - Have manual override capability available
